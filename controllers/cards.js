@@ -54,7 +54,11 @@ const dislikeCard = (req, res) => {
     { new: true }
   )
     .orFail(new Error("Tarjeta no encontrada"))
-    .then((updatedCard) => res.send(updatedCard))
+    .then((updatedCard) => {
+      res
+        .status(200)
+        .send({ message: "Me gusta eliminado de la tarjeta", updatedCard });
+    })
     .catch((err) => {
       console.log(err);
       res

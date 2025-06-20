@@ -8,14 +8,14 @@ const PORT = 3000;
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use("/users", require("./routes/users"));
-app.use("/cards", require("./routes/cards"));
 app.use((req, res, next) => {
   req.user = {
     _id: "6854f60e479442f59f46afcc",
   };
   next();
 });
+app.use("/users", require("./routes/users"));
+app.use("/cards", require("./routes/cards"));
 
 app.get("/", (req, res) => {
   res.status(404);

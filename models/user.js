@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 
+const urlRegex =
+  /^https?:\/\/(www\.)?[a-zA-Z0-9.-]+(\.[a-zA-Z]{2,})?\/[a-zA-Z0-9._~:\/?%#\[\]@!$&'()*+,;=-]*$/;
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -18,12 +21,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(v) {
-        return /^https?:\/\/(www\.)?([a-zA-Z0-9\-._~%]+)\.[a-zA-Z]{2,}(\/[\w\-._~:/?#[\]@!$&'()*+,;=%]*)*#?$/i.test(
-          v
-        );
+        return urlRegex.test(v);
       },
+      message: "Enlace a avatar inválido",
     },
-    message: "Enlace a avatar inválido",
   },
 });
 

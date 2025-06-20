@@ -5,4 +5,6 @@ MVP backend application to be used in conjunction with React frontend applicatio
 Built with:
 * Node.js
 * Express.js
+* MongoDB
+* Mongoose
   

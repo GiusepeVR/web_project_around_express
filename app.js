@@ -1,49 +1,20 @@
 const express = require("express");
-const fs = require("fs");
-const path = require("path");
+const cors = require("cors");
+const mongoose = require("mongoose");
+
+mongoose.connect("mongodb://localhost:27017/aroundb");
+const PORT = 3000;
 
 const app = express();
-
-const PORT = 3000;
-const cardsPath = path.join(__dirname, "/data/cards.json");
-const usersPath = path.join(__dirname, "/data/users.json");
-
-app.get("/users", (req, res) => {
-  fs.readFile(usersPath, { encoding: "utf8" }, (err, data) => {
-    if (err) {
-      console.log(err);
-    }
-    res.send(JSON.parse(data));
-  });
-});
-
-app.get("/users/:id", (req, res) => {
-  const userId = req.params.id;
-  fs.readFile(usersPath, { encoding: "utf8" }, (err, data) => {
-    if (err) {
-      console.log(err);
-      res.status(404);
-      res.send({ message: "ID de usuario no encontrado" });
-      return;
-    }
-
-    const user = JSON.parse(data).find((e) => e._id === userId);
-    if (!user) {
-      res.status(404);
-      res.send({ message: "ID de usuario no encontrado" });
-      return;
-    }
-    res.send(user);
-  });
-});
-
-app.get("/cards", (req, res) => {
-  fs.readFile(cardsPath, { encoding: "utf8" }, (err, data) => {
-    if (err) {
-      console.log(err);
-    }
-    res.send(JSON.parse(data));
-  });
+app.use(cors());
+app.use(express.json());
+app.use("/users", require("./routes/users"));
+app.use("/cards", require("./routes/cards"));
+app.use((req, res, next) => {
+  req.user = {
+    _id: "6854f60e479442f59f46afcc",
+  };
+  next();
 });
 
 app.get("/", (req, res) => {
